@@ -6,7 +6,7 @@
 
 Marketing website and interactive demo for [Pre-Appointment 1](https://play.google.com/store/apps/details?id=com.preappointment1.app) (P1) — the app that prepares you for doctor visits by turning daily check-ins into a clear medical briefing.
 
-**Live:** [p1health.dev](https://p1health.dev) · **App:** [Google Play](https://play.google.com/store/apps/details?id=com.preappointment1.app) · **Main repo:** [Group-Hackathon/p1](https://github.com/Group-Hackathon/p1)
+· **App:** [Google Play](https://play.google.com/store/apps/details?id=com.preappointment1.app) · **Main repo:** [Group-Hackathon/p1](https://github.com/Group-Hackathon/p1)
 
 ---
 
