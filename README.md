@@ -1,19 +1,26 @@
-# P1 Health — React + Tailwind Prototype
+# P1 — Website & Interactive Demo
 
-A polished frontend prototype for P1, a health-story organization concept.
+[![Built with Vite](https://img.shields.io/badge/Vite-6.x-646CFF?logo=vite)](https://vitejs.dev)
+[![React 18](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)](https://react.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
+
+Marketing website and interactive demo for [Pre-Appointment 1](https://play.google.com/store/apps/details?id=com.preappointment1.app) (P1) — the app that prepares you for doctor visits by turning daily check-ins into a clear medical briefing.
+
+**Live:** [p1health.dev](https://p1health.dev) · **App:** [Google Play](https://play.google.com/store/apps/details?id=com.preappointment1.app) · **Main repo:** [Group-Hackathon/p1](https://github.com/Group-Hackathon/p1)
+
+---
 
 ## Features
 
-- Landing page
-- Patient dashboard with mock health data
-- Add symptom interaction
-- 7-day symptom visualization
-- Simulated AI health summary
-- Doctor visit summary
-- Interactive natural-language demo
-- Responsive desktop/mobile UI
-- Print/save-PDF action on the doctor summary
-- No backend or API key required
+- **Landing page** with screenshots, feature grid, how-it-works section, tracking types
+- **Interactive demo** — enter a natural-language symptom note, get a simulated AI summary
+- **Dashboard** — mock patient view with symptom cards, 7-day bar chart, add symptom modal
+- **AI Health Summary** — trend signals, key symptoms, "what changed?" insight
+- **Doctor Visit Summary** — print-ready one-page briefing with observations and questions
+- **Responsive** — mobile-first, works on all screen sizes
+- **Cloudflare Pages + Workers** — static site with serverless waitlist API
+
+---
 
 ## Run locally
 
@@ -22,7 +29,7 @@ npm install
 npm run dev
 ```
 
-Then open the local Vite URL shown in the terminal.
+Open the Vite URL shown in the terminal.
 
 ## Build
 
@@ -31,20 +38,57 @@ npm run build
 npm run preview
 ```
 
-## Project structure
+## Deploy to Cloudflare Pages
 
-```text
-src/
-├── components/
-├── data/
-├── pages/
-├── App.jsx
-├── main.jsx
-└── index.css
+```bash
+npx wrangler pages deploy dist --project-name=p1-website
 ```
 
-## Important prototype note
+### Worker setup (optional waitlist API)
+
+1. Create a KV namespace:
+   ```bash
+   npx wrangler kv:namespace create WAITLIST_KV
+   ```
+2. Bind it in `wrangler.toml`:
+   ```toml
+   kv_namespaces = [
+     { binding = "WAITLIST_KV", id = "<your-namespace-id>" }
+   ]
+   ```
+3. Deploy: `npx wrangler pages deploy dist`
+
+The waitlist endpoint is at `POST /api/waitlist` with body `{ "email": "..." }`.
+
+---
+
+## Project structure
+
+```
+src/
+├── components/       # Layout, Navbar, Sidebar, Logo, StatCard, SymptomCard, AIInsight
+├── data/             # mockData.js (sample patient data), appFeatures.js (product content)
+├── pages/            # Landing, Dashboard, HealthSummary, DoctorSummary, Demo
+├── App.jsx           # Root with page routing
+├── main.jsx          # React entry point
+└── index.css         # Tailwind + custom utilities
+
+public/
+├── screenshots/      # App screenshots (dashboard, journey, check-in, pain, photo)
+├── favicon.svg
+├── robots.txt
+├── sitemap.xml
+├── _headers          # Cloudflare security headers
+└── _redirects        # SPA fallback routing
+
+functions/
+└── api/waitlist.js   # Serverless waitlist endpoint
+```
+
+---
+
+## Important
 
 The AI behavior and health data are simulated. This prototype must not be represented as a medical diagnostic system or used for clinical decision-making.
 
-When P1's actual backend/API is available, the mock data and simulated summary functions can be replaced with real API calls.
+P1 is a product of **Living Patient Memory**. Contact: [contact@livingpatientmemory.com](mailto:contact@livingpatientmemory.com)

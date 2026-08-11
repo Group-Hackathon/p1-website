@@ -1,6 +1,6 @@
 import React from "react";
-import { Download, FileText, HelpCircle, Printer, Stethoscope } from "lucide-react";
-import { visitSummary } from "../data/mockData";
+import { FileText, HelpCircle, Printer, Stethoscope } from "lucide-react";
+import { visitSummary, getDateRange, getFormattedToday } from "../data/mockData";
 
 export default function DoctorSummary() {
   function printPage() {
@@ -21,13 +21,13 @@ export default function DoctorSummary() {
       <div className="mt-8 rounded-3xl border border-line bg-white p-6 shadow-sm sm:p-8">
         <div className="flex flex-col justify-between gap-6 border-b border-line pb-7 sm:flex-row">
           <div className="flex gap-4">
-            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gray-100 text-ink"><Stethoscope /></div>
+            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-accent-light text-accent"><Stethoscope /></div>
             <div>
               <h2 className="text-xl font-bold">Alex Rivera</h2>
-              <p className="mt-1 text-sm text-muted">Patient · Demo record · Updated Aug 9, 2026</p>
+              <p className="mt-1 text-sm text-muted">Patient · Demo record · Updated {getFormattedToday()}</p>
             </div>
           </div>
-          <div className="rounded-xl bg-cream px-4 py-3 text-sm"><span className="text-muted">Period</span><br/><strong>Aug 3–9</strong></div>
+          <div className="rounded-xl bg-cream px-4 py-3 text-sm"><span className="text-muted">Period</span><br/><strong>{getDateRange()}</strong></div>
         </div>
 
         <div className="mt-8 grid gap-8 md:grid-cols-2">

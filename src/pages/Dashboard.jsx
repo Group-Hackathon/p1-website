@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { Activity, CalendarDays, Clock3, Plus, Smile, Moon, Zap } from "lucide-react";
-import { initialSymptoms, symptomHistory } from "../data/mockData";
+import { Activity, CalendarDays, Plus, Smile, Moon, Zap } from "lucide-react";
+import { initialSymptoms, symptomHistory, getFormattedToday } from "../data/mockData";
 import StatCard from "../components/StatCard";
 import SymptomCard from "../components/SymptomCard";
 
@@ -27,7 +27,7 @@ export default function Dashboard({ onGenerate }) {
     <div className="mx-auto max-w-7xl">
       <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold text-ink">Sunday, August 9</p>
+          <p className="text-sm font-semibold text-ink">{getFormattedToday()}</p>
           <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">Good morning, Alex.</h1>
           <p className="mt-2 text-muted">Here’s a quick view of what you’ve logged recently.</p>
         </div>

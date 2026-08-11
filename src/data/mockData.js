@@ -1,11 +1,21 @@
+const today = new Date();
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function dayOffset(offset) {
+  const d = new Date(today);
+  d.setDate(d.getDate() + offset);
+  return { day: days[d.getDay()], date: `${months[d.getMonth()]} ${d.getDate()}` };
+}
+
 export const symptomHistory = [
-  { day: "Mon", date: "Aug 3", headache: 1, fatigue: 2, sleep: 7.5 },
-  { day: "Tue", date: "Aug 4", headache: 2, fatigue: 3, sleep: 6.8 },
-  { day: "Wed", date: "Aug 5", headache: 3, fatigue: 4, sleep: 6.2 },
-  { day: "Thu", date: "Aug 6", headache: 2, fatigue: 3, sleep: 7.0 },
-  { day: "Fri", date: "Aug 7", headache: 4, fatigue: 5, sleep: 5.9 },
-  { day: "Sat", date: "Aug 8", headache: 3, fatigue: 4, sleep: 6.4 },
-  { day: "Sun", date: "Aug 9", headache: 3, fatigue: 4, sleep: 6.1 },
+  { ...dayOffset(-6), headache: 1, fatigue: 2, sleep: 7.5 },
+  { ...dayOffset(-5), headache: 2, fatigue: 3, sleep: 6.8 },
+  { ...dayOffset(-4), headache: 3, fatigue: 4, sleep: 6.2 },
+  { ...dayOffset(-3), headache: 2, fatigue: 3, sleep: 7.0 },
+  { ...dayOffset(-2), headache: 4, fatigue: 5, sleep: 5.9 },
+  { ...dayOffset(-1), headache: 3, fatigue: 4, sleep: 6.4 },
+  { ...dayOffset(0), headache: 3, fatigue: 4, sleep: 6.1 },
 ];
 
 export const initialSymptoms = [
@@ -49,3 +59,13 @@ export const visitSummary = {
     "What additional information would be useful to track?",
   ],
 };
+
+export function getFormattedToday() {
+  return `${days[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}`;
+}
+
+export function getDateRange() {
+  const start = dayOffset(-6);
+  const end = dayOffset(0);
+  return `${start.date}–${end.date}, ${today.getFullYear()}`;
+}

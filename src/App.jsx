@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Home } from "lucide-react";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
@@ -14,10 +15,15 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function goHome() {
+    setPage("landing");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   if (page === "landing") return <Landing onDemo={openDemo} />;
 
   return (
-    <Layout page={page} setPage={setPage}>
+    <Layout page={page} setPage={setPage} goHome={goHome}>
       {page === "dashboard" && <Dashboard onGenerate={() => setPage("summary")} />}
       {page === "summary" && <HealthSummary onDoctor={() => setPage("doctor")} />}
       {page === "doctor" && <DoctorSummary />}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowRight, LoaderCircle, Sparkles } from "lucide-react";
+import { MoveRight, LoaderCircle, BarChart3 } from "lucide-react";
 
 const examples = [
   "I've had a headache and felt tired since yesterday.",
@@ -18,13 +18,13 @@ export default function Demo({ onSummary }) {
     setResult(null);
     setTimeout(() => {
       setResult({
-        headline: "Possible health-story summary",
+        headline: "Health-story summary",
         bullets: [
-          "Headache and fatigue were mentioned in the recent note.",
-          "The note indicates the symptoms started around yesterday.",
-          "Additional tracking could capture severity, duration, sleep, and triggers.",
+          "Headache and fatigue noted in recent entry.",
+          "Symptoms reported to have started recently.",
+          "Tracking severity, duration, and sleep context would add useful detail.",
         ],
-        next: "For a real clinical workflow, the patient and clinician should verify the summary and add any missing context.",
+        next: "In production, the patient and clinician would verify the summary and add any missing context before the visit.",
       });
       setLoading(false);
     }, 900);
@@ -35,31 +35,53 @@ export default function Demo({ onSummary }) {
       <div>
         <p className="text-sm font-semibold text-ink">Interactive demo</p>
         <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">Show P1 the story.</h1>
-        <p className="mt-2 max-w-2xl text-muted">Enter a natural-language symptom note. The prototype will turn it into a structured, simulated summary.</p>
+        <p className="mt-2 max-w-2xl text-muted">Enter a natural-language symptom note. This prototype simulates how P1 structures a health story.</p>
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
         <section className="rounded-3xl border border-line bg-white p-6 shadow-sm sm:p-8">
-          <div className="flex items-center gap-2 text-sm font-bold text-ink"><Sparkles size={17}/> Simulated AI</div>
+          <div className="flex items-center gap-2 text-sm font-bold text-ink">
+            <BarChart3 size={17} /> Simulation
+          </div>
           <label className="mt-6 block text-sm font-bold">What are you experiencing?</label>
-          <textarea value={text} onChange={(e)=>setText(e.target.value)} rows="8" placeholder="e.g. I've had a headache and felt tired since yesterday." className="mt-3 w-full resize-none rounded-2xl border border-line p-4 text-base leading-7 outline-none transition focus:border-ink focus:ring-4 focus:ring-gray-200" />
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows="8"
+            placeholder="Describe a symptom or anything you've noticed..."
+            className="mt-3 w-full resize-none rounded-2xl border border-line p-4 text-base leading-7 outline-none transition focus:border-ink focus:ring-4 focus:ring-gray-100"
+          />
           <div className="mt-4">
             <p className="text-xs font-semibold text-muted">Try an example</p>
             <div className="mt-2 flex flex-wrap gap-2">
-              {examples.map((x) => <button key={x} onClick={()=>setText(x)} className="rounded-full border border-line px-3 py-2 text-left text-xs font-medium text-muted hover:border-ink/40 hover:text-ink">{x}</button>)}
+              {examples.map((x) => (
+                <button key={x} onClick={() => setText(x)} className="rounded-full border border-line px-3 py-2 text-left text-xs font-medium text-muted hover:border-ink/40 hover:text-ink transition">
+                  {x}
+                </button>
+              ))}
             </div>
           </div>
-          <button onClick={generate} disabled={!text.trim() || loading} className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50">
-            {loading ? <><LoaderCircle className="animate-spin" size={18}/> Generating…</> : <>Generate summary <ArrowRight size={18}/></>}
+          <button
+            onClick={generate}
+            disabled={!text.trim() || loading}
+            className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? (
+              <><LoaderCircle className="animate-spin" size={18} /> Processing...</>
+            ) : (
+              <>Generate summary <MoveRight size={18} /></>
+            )}
           </button>
-          <p className="mt-3 text-center text-xs text-muted">No real medical inference is performed in this prototype.</p>
+          <p className="mt-3 text-center text-xs text-muted">No real medical inference runs here. This is a prototype.</p>
         </section>
 
         <section className="rounded-3xl border border-line bg-cream p-6 sm:p-8">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">Output</p>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">Result</p>
           {!result ? (
             <div className="flex min-h-[330px] flex-col items-center justify-center text-center">
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-ink shadow-sm"><Sparkles /></div>
+              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-ink shadow-sm">
+                <BarChart3 size={28} />
+              </div>
               <h2 className="mt-5 text-lg font-bold">Your summary will appear here</h2>
               <p className="mt-2 max-w-xs text-sm leading-6 text-muted">Add a note on the left and generate a demo summary.</p>
             </div>
@@ -69,7 +91,12 @@ export default function Demo({ onSummary }) {
                 <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[10px] font-bold text-ink">SIMULATED</span>
                 <h2 className="mt-4 text-xl font-bold">{result.headline}</h2>
                 <div className="mt-5 space-y-3">
-                  {result.bullets.map((x) => <div key={x} className="flex gap-3 text-sm leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink"/>{x}</div>)}
+                  {result.bullets.map((x) => (
+                    <div key={x} className="flex gap-3 text-sm leading-6">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+                      {x}
+                    </div>
+                  ))}
                 </div>
                 <div className="mt-5 rounded-xl bg-cream p-4 text-xs leading-5 text-muted">{result.next}</div>
               </div>

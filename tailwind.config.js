@@ -4,16 +4,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#111111",
-        muted: "#666666",
-        mint: "#F1F1F1",
-        teal: "#222222",
-        tealDark: "#000000",
-        cream: "#F7F7F7",
-        line: "#D9D9D9",
+        ink: "#0F172A",
+        muted: "#64748B",
+        mint: "#F1F5F9",
+        teal: "#1E293B",
+        tealDark: "#0F172A",
+        cream: "#F8FAFC",
+        line: "#E2E8F0",
+        accent: "#2563EB",
+        "accent-light": "#EFF6FF",
+        "pain-low": "#10B981",
+        "pain-med": "#F59E0B",
+        "pain-high": "#EF4444",
       },
       boxShadow: {
-        soft: "0 20px 60px rgba(16, 42, 43, 0.08)",
+        soft: "0 20px 60px rgba(15, 23, 42, 0.08)",
+      },
+      fontFamily: {
+        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
       },
     },
   },
