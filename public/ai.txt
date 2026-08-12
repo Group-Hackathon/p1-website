@@ -1,0 +1,22 @@
+# AI Crawler Policy for p1-website-9fb.pages.dev
+# Pre-Appointment 1 — Open source health app
+
+[site]
+name = Pre-Appointment 1 (P1)
+description = Mobile app that turns daily health check-ins into a one-page physician briefing. 3D body map, photo tracking, AI summaries.
+url = https://p1-website-9fb.pages.dev
+
+[crawling]
+allowed = true
+sitemap = https://p1-website-9fb.pages.dev/sitemap.xml
+llms = https://p1-website-9fb.pages.dev/llms.txt
+
+[resources]
+github = https://github.com/Group-Hackathon/p1
+playstore = https://play.google.com/store/apps/details?id=com.preappointment1.app
+contact = contact@livingpatientmemory.com
+
+[structured_data]
+jsonld = true
+opengraph = true
+twitter_card = true

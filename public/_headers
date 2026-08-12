@@ -3,6 +3,16 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Link: </sitemap.xml>; rel="sitemap"
+  Link: </llms.txt>; rel="llms"
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+/llms.txt
+  Cache-Control: public, max-age=86400
+  Content-Type: text/plain; charset=utf-8
+
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+  Content-Type: application/xml
