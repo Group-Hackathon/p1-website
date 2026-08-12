@@ -1,0 +1,31 @@
+# P1 — Pre-Appointment 1
+# Walk into your appointment with a file ready.
+
+## Project
+P1 is a mobile app (Android, iOS coming) that captures what happens between doctor visits — pain levels, photos, temperature, notes — and compiles it into a clear one-page physician briefing.
+
+## Key Features
+- 3D body map to mark pain locations (23 body regions, front/back)
+- 2-minute daily check-ins: pain gauge, temperature, photo with ghost overlay
+- Gemini-powered AI micro-reports and trend detection
+- One-page PDF physician briefing with charts, photos, questions
+- Privacy-first architecture with self-deployable backend
+- Works offline, syncs when online
+
+## Links
+- Website: https://p1-website-9fb.pages.dev
+- Google Play: https://play.google.com/store/apps/details?id=com.preappointment1.app
+- GitHub (main): https://github.com/Group-Hackathon/p1
+- GitHub (website source): https://github.com/Group-Hackathon/p1-website
+- Organization: https://github.com/Group-Hackathon
+- Contact: contact@livingpatientmemory.com
+
+## Tech Stack
+- Android: Kotlin + Jetpack Compose
+- iOS: SwiftUI
+- Backend: Go + PostgreSQL (Cloud Run)
+- Website: React + Vite + Tailwind CSS (Cloudflare Pages)
+- AI: Google Gemini
+
+## Status
+v1.0.14 on Google Play. iOS in development. Hackathon project for XPRIZE Gemini. MVP phase.
