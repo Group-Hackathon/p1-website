@@ -6,20 +6,20 @@ import { howItWorks, trackingTypes } from "../data/appFeatures";
 
 function PhoneFrame({ src, alt, label }) {
   return (
-    <div className="group mx-auto w-[240px] sm:w-[260px]">
-      <div className="overflow-hidden rounded-[2.5rem] border-[3px] border-ink/15 bg-ink p-1.5 shadow-soft transition group-hover:-translate-y-1">
-        <div className="overflow-hidden rounded-[2rem]">
+    <div className="group mx-auto w-[150px] sm:w-[180px] md:w-[240px] lg:w-[260px]">
+      <div className="overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] border-[2px] sm:border-[3px] border-ink/15 bg-ink p-1 sm:p-1.5 shadow-soft transition group-hover:-translate-y-1">
+        <div className="overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]">
           <img src={src} alt={alt} className="w-full" loading="lazy" />
         </div>
       </div>
       {label && (
-        <p className="mt-3 text-center text-sm font-semibold text-ink">{label}</p>
+        <p className="mt-2 text-center text-[11px] sm:text-sm font-semibold text-ink">{label}</p>
       )}
     </div>
   );
 }
 
-export default function Landing({ onDemo }) {
+export default function Landing({ onDemo, onPrivacy }) {
   return (
     <div id="home" className="min-h-screen bg-cream">
       <Navbar onDemo={onDemo} />
@@ -80,16 +80,16 @@ export default function Landing({ onDemo }) {
       </section>
 
       {/* Screenshots */}
-      <section className="border-y border-line bg-white py-12 sm:py-20">
+      <section className="border-y border-line bg-white py-12 sm:py-20 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-muted text-center">In action</p>
           <h2 className="section-title mt-3 text-center text-2xl sm:text-4xl">See P1 on the device.</h2>
-          <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
-            <PhoneFrame src="/screenshots/01-home.png" alt="P1 Dashboard" label="Dashboard" />
-            <PhoneFrame src="/screenshots/02-journey.png" alt="P1 Journey" label="Journey" />
-            <PhoneFrame src="/screenshots/03-checkin.png" alt="P1 Check-in" label="3D Check-in" />
-            <PhoneFrame src="/screenshots/04-pain.png" alt="P1 Pain tracking" label="Pain" />
-            <PhoneFrame src="/screenshots/05-photo.png" alt="P1 Photo mode" label="Photo" />
+          <div className="mt-8 sm:mt-12 flex sm:grid sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-4 sm:mx-0 px-4 sm:px-0 snap-x sm:snap-none">
+            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/01-home.png" alt="P1 Dashboard" label="Dashboard" /></div>
+            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/02-journey.png" alt="P1 Journey" label="Journey" /></div>
+            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/03-checkin.png" alt="P1 Check-in" label="3D Check-in" /></div>
+            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/04-pain.png" alt="P1 Pain tracking" label="Pain" /></div>
+            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/05-photo.png" alt="P1 Photo mode" label="Photo" /></div>
           </div>
         </div>
       </section>
@@ -257,6 +257,7 @@ export default function Landing({ onDemo }) {
                 <div className="mt-3 space-y-2">
                   <a href="mailto:contact@livingpatientmemory.com" className="block text-sm text-muted hover:text-ink transition">Email us</a>
                   <a href="https://play.google.com/store/apps/details?id=com.preappointment1.app" target="_blank" rel="noopener" className="block text-sm text-muted hover:text-ink transition">Support</a>
+                  <button onClick={onPrivacy} className="block text-sm text-muted hover:text-ink transition">Privacy</button>
                 </div>
               </div>
             </div>
