@@ -25,35 +25,35 @@ export default function Landing({ onDemo }) {
       <Navbar onDemo={onDemo} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden pt-32">
+      <section className="relative overflow-hidden pt-24 lg:pt-32">
         <div className="absolute -right-32 top-20 h-96 w-96 rounded-full bg-accent-light blur-3xl opacity-60" />
         <div className="absolute -left-32 top-72 h-64 w-64 rounded-full bg-white blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:pb-32">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-8 lg:gap-14 px-4 sm:px-5 pb-16 lg:pb-32 lg:grid-cols-[1.05fr_.95fr] lg:px-8">
           <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink/12 bg-white px-3 py-1.5 text-xs font-bold text-muted">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-ink/12 bg-white px-3 py-1.5 text-[11px] font-bold text-muted">
               v1.0.14 · Available on Google Play
             </div>
-            <h1 className="max-w-3xl text-5xl font-black leading-[1.02] tracking-[-0.04em] text-ink sm:text-6xl lg:text-7xl">
+            <h1 className="max-w-3xl text-3xl sm:text-5xl lg:text-7xl font-black leading-[1.05] tracking-[-0.03em] text-ink">
               Walk into your appointment with a file ready.
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
+            <p className="mt-4 sm:mt-6 max-w-xl text-base sm:text-lg leading-7 sm:leading-8 text-muted">
               P1 captures what happens between doctor visits — pain, photos, temperature, notes — and compiles it into a clear, one-page physician briefing.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <button onClick={onDemo} className="btn-primary text-base px-6 py-3.5">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-2.5 sm:gap-3">
+              <button onClick={onDemo} className="btn-primary text-sm sm:text-base px-5 sm:px-6 py-3 sm:py-3.5 w-full sm:w-auto justify-center">
                 Try the demo <MoveRight size={18} />
               </button>
-              <a href="https://play.google.com/store/apps/details?id=com.preappointment1.app" target="_blank" rel="noopener" className="btn-secondary text-base px-6 py-3.5">
+              <a href="https://play.google.com/store/apps/details?id=com.preappointment1.app" target="_blank" rel="noopener" className="btn-secondary text-sm sm:text-base px-5 sm:px-6 py-3 sm:py-3.5 w-full sm:w-auto justify-center">
                 <Smartphone size={18} /> Google Play
               </a>
-              <a href="https://github.com/Group-Hackathon/p1" target="_blank" rel="noopener" className="btn-secondary text-base px-5 py-3.5">
+              <a href="https://github.com/Group-Hackathon/p1" target="_blank" rel="noopener" className="btn-secondary text-sm sm:text-base px-5 py-3 sm:py-3.5 w-full sm:w-auto justify-center">
                 <Github size={18} /> GitHub
               </a>
             </div>
-            <p className="mt-4 text-xs text-muted">Prototype only · Simulated data · Not medical advice</p>
+            <p className="mt-4 text-[11px] text-muted">Prototype only · Simulated data · Not medical advice</p>
           </div>
 
-          <div className="relative">
+          <div className="hidden lg:block relative">
             <div className="rounded-[2rem] border border-line bg-white p-4 shadow-soft">
               <div className="rounded-[1.5rem] bg-ink p-5 text-white">
                 <div className="flex items-center justify-between">
@@ -80,27 +80,27 @@ export default function Landing({ onDemo }) {
       </section>
 
       {/* Screenshots */}
-      <section className="border-y border-line bg-white py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="border-y border-line bg-white py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-muted text-center">In action</p>
-          <h2 className="section-title mt-3 text-center">See P1 on the device.</h2>
-          <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-5">
+          <h2 className="section-title mt-3 text-center text-2xl sm:text-4xl">See P1 on the device.</h2>
+          <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
             <PhoneFrame src="/screenshots/01-home.png" alt="P1 Dashboard" label="Dashboard" />
             <PhoneFrame src="/screenshots/02-journey.png" alt="P1 Journey" label="Journey" />
             <PhoneFrame src="/screenshots/03-checkin.png" alt="P1 Check-in" label="3D Check-in" />
-            <PhoneFrame src="/screenshots/04-pain.png" alt="P1 Pain tracking" label="Pain gauge" />
-            <PhoneFrame src="/screenshots/05-photo.png" alt="P1 Photo mode" label="Photo mode" />
+            <PhoneFrame src="/screenshots/04-pain.png" alt="P1 Pain tracking" label="Pain" />
+            <PhoneFrame src="/screenshots/05-photo.png" alt="P1 Photo mode" label="Photo" />
           </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="py-24">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section id="how-it-works" className="py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-muted">How it works</p>
-          <h2 className="section-title mt-3">From scattered notes to a useful visit summary.</h2>
-          <p className="mt-3 max-w-2xl text-lg leading-8 text-muted">Four steps. About two minutes a day. One clear file for your doctor.</p>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <h2 className="section-title mt-3 text-2xl sm:text-4xl">From scattered notes to a useful visit summary.</h2>
+          <p className="mt-3 max-w-2xl text-base sm:text-lg leading-7 sm:leading-8 text-muted">Four steps. About two minutes a day. One clear file for your doctor.</p>
+          <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((item) => (
               <div key={item.step} className="group rounded-3xl border border-line bg-white p-6 transition hover:shadow-soft">
                 <span className="text-4xl font-black text-line group-hover:text-ink/15 transition">{item.step}</span>
@@ -113,7 +113,7 @@ export default function Landing({ onDemo }) {
       </section>
 
       {/* Why P1 */}
-      <section id="why-p1" className="border-y border-line bg-white py-24">
+      <section id="why-p1" className="border-y border-line bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
@@ -165,8 +165,8 @@ export default function Landing({ onDemo }) {
       </section>
 
       {/* Tracking types */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      <section className="py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-muted">Tracking</p>
           <h2 className="section-title mt-3">What you can track today.</h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -188,18 +188,18 @@ export default function Landing({ onDemo }) {
       </section>
 
       {/* Open source callout */}
-      <section className="border-y border-line bg-white py-16">
-        <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-          <Github size={32} className="mx-auto text-ink" />
-          <h2 className="mt-4 text-2xl font-bold">Open source, privacy-first.</h2>
-          <p className="mt-3 text-muted leading-7">
+      <section className="border-y border-line bg-white py-12 sm:py-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-5 text-center lg:px-8">
+          <Github size={28} className="mx-auto text-ink" />
+          <h2 className="mt-4 text-xl sm:text-2xl font-bold">Open source, privacy-first.</h2>
+          <p className="mt-3 text-sm sm:text-base text-muted leading-7">
             P1 is built in the open. Explore the code, deploy your own backend, or contribute.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <a href="https://github.com/Group-Hackathon/p1" target="_blank" rel="noopener" className="btn-primary">
+          <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+            <a href="https://github.com/Group-Hackathon/p1" target="_blank" rel="noopener" className="btn-primary text-sm sm:text-base w-full sm:w-auto justify-center">
               <Github size={17} /> Main repo
             </a>
-            <a href="https://github.com/Group-Hackathon/p1-website" target="_blank" rel="noopener" className="btn-secondary">
+            <a href="https://github.com/Group-Hackathon/p1-website" target="_blank" rel="noopener" className="btn-secondary text-sm sm:text-base w-full sm:w-auto justify-center">
               Website source <ExternalLink size={15} />
             </a>
           </div>
@@ -207,17 +207,17 @@ export default function Landing({ onDemo }) {
       </section>
 
       {/* CTA */}
-      <section className="bg-ink py-24 text-white">
-        <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-          <h2 className="text-3xl font-black tracking-tight sm:text-4xl">Ready to try it?</h2>
-          <p className="mt-4 text-lg leading-8 text-white/60">
+      <section className="bg-ink py-16 sm:py-24 text-white">
+        <div className="mx-auto max-w-3xl px-4 sm:px-5 text-center lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight sm:text-4xl">Ready to try it?</h2>
+          <p className="mt-4 text-base sm:text-lg leading-7 sm:leading-8 text-white/60">
             Open the interactive demo — enter any symptom note and see how P1 turns everyday observations into a clear health story.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <button onClick={onDemo} className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-ink transition hover:bg-gray-100">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3">
+            <button onClick={onDemo} className="inline-flex items-center gap-2 rounded-xl bg-white px-5 sm:px-6 py-3 sm:py-3.5 font-bold text-ink transition hover:bg-gray-100 justify-center text-sm sm:text-base">
               Launch demo <MoveRight size={18} />
             </button>
-            <a href="https://play.google.com/store/apps/details?id=com.preappointment1.app" target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10">
+            <a href="https://play.google.com/store/apps/details?id=com.preappointment1.app" target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-5 sm:px-6 py-3 sm:py-3.5 font-semibold text-white transition hover:bg-white/10 justify-center text-sm sm:text-base">
               <Smartphone size={18} /> Install on Play Store
             </a>
           </div>

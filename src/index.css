@@ -20,6 +20,10 @@ body {
   min-height: 100vh;
 }
 
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 button, input, textarea {
   font: inherit;
 }
