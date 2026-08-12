@@ -91,4 +91,4 @@ functions/
 
 The AI behavior and health data are simulated. This prototype must not be represented as a medical diagnostic system or used for clinical decision-making.
 
-P1 is a product of **Living Patient Memory**. Contact: [contact@livingpatientmemory.com](mailto:contact@livingpatientmemory.com)
+P1 is a product of **Living Patient Memory**. Contact: [opendatahive@gmail.com](mailto:opendatahive@gmail.com)

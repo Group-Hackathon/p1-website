@@ -255,7 +255,7 @@ export default function Landing({ onDemo, onPrivacy }) {
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-ink">Contact</p>
                 <div className="mt-3 space-y-2">
-                  <a href="mailto:contact@livingpatientmemory.com" className="block text-sm text-muted hover:text-ink transition">Email us</a>
+                  <a href="mailto:opendatahive@gmail.com" className="block text-sm text-muted hover:text-ink transition">Email us</a>
                   <a href="https://play.google.com/store/apps/details?id=com.preappointment1.app" target="_blank" rel="noopener" className="block text-sm text-muted hover:text-ink transition">Support</a>
                   <button onClick={onPrivacy} className="block text-sm text-muted hover:text-ink transition">Privacy</button>
                 </div>

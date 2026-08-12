@@ -72,7 +72,7 @@ export default function Privacy({ goHome }) {
 
         <section className="mt-8 mb-12">
           <h2 className="text-xl font-bold text-ink">6. Contact Us</h2>
-          <p className="mt-3 text-muted leading-7">If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at <a href="mailto:contact@livingpatientmemory.com" className="text-accent hover:underline">contact@livingpatientmemory.com</a>.</p>
+          <p className="mt-3 text-muted leading-7">If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at <a href="mailto:opendatahive@gmail.com" className="text-accent hover:underline">opendatahive@gmail.com</a>.</p>
         </section>
       </main>
     </div>

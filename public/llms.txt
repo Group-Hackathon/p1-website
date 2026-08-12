@@ -18,7 +18,7 @@ P1 is a mobile app (Android, iOS coming) that captures what happens between doct
 - GitHub (main): https://github.com/Group-Hackathon/p1
 - GitHub (website source): https://github.com/Group-Hackathon/p1-website
 - Organization: https://github.com/Group-Hackathon
-- Contact: contact@livingpatientmemory.com
+- Contact: opendatahive@gmail.com
 
 ## Tech Stack
 - Android: Kotlin + Jetpack Compose

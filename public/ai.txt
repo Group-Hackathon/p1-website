@@ -14,7 +14,7 @@ llms = https://p1-website-9fb.pages.dev/llms.txt
 [resources]
 github = https://github.com/Group-Hackathon/p1
 playstore = https://play.google.com/store/apps/details?id=com.preappointment1.app
-contact = contact@livingpatientmemory.com
+contact = opendatahive@gmail.com
 
 [structured_data]
 jsonld = true
