@@ -31,7 +31,7 @@ export default function Sidebar({ page, setPage, goHome }) {
             key={id}
             onClick={() => setPage(id)}
             className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${
-              page === id ? "bg-gray-100 text-ink" : "text-muted hover:bg-cream hover:text-ink"
+              page === id ? "bg-mint text-mint-dark font-bold shadow-sm" : "text-muted hover:bg-cream hover:text-ink"
             }`}
           >
             <Icon size={19} />
@@ -39,12 +39,12 @@ export default function Sidebar({ page, setPage, goHome }) {
           </button>
         ))}
       </nav>
-      <div className="m-4 rounded-2xl bg-cream p-4">
+      <div className="m-4 rounded-2xl bg-cream border border-line p-4">
         <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-full bg-accent text-sm font-bold text-white">AR</div>
+          <div className="grid h-10 w-10 place-items-center rounded-full bg-sage text-sm font-bold text-white">AR</div>
           <div className="min-w-0">
-            <p className="truncate text-sm font-bold">Alex Rivera</p>
-            <p className="text-xs text-muted">Patient</p>
+            <p className="truncate text-sm font-bold text-ink">Alex Rivera</p>
+            <p className="text-xs text-muted">Patient 1</p>
           </div>
         </div>
         <button className="mt-4 flex items-center gap-2 text-xs font-semibold text-muted hover:text-ink transition">
@@ -54,3 +54,4 @@ export default function Sidebar({ page, setPage, goHome }) {
     </aside>
   );
 }
+

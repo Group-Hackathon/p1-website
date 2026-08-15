@@ -4,8 +4,8 @@
 
 :root {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #0F172A;
-  background: #F8FAFC;
+  color: #191E1C;
+  background: #F7F9F8;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -18,6 +18,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #F7F9F8;
+  color: #191E1C;
 }
 
 .safe-bottom {
@@ -29,8 +31,8 @@ button, input, textarea {
 }
 
 ::selection {
-  background: #E2E8F0;
-  color: #0F172A;
+  background: #E5EFEA;
+  color: #265B4E;
 }
 
 @layer components {
@@ -39,15 +41,15 @@ button, input, textarea {
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-teal hover:-translate-y-0.5 active:translate-y-0;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-sage px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-sage-dark hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-5 py-3 font-semibold text-ink transition hover:border-ink/40 hover:bg-cream;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-5 py-3 font-semibold text-ink transition hover:border-sage/40 hover:bg-cream;
   }
 
   .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:-translate-y-0.5 active:translate-y-0;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-sage-light px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-sage hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .section-title {
@@ -67,3 +69,4 @@ button, input, textarea {
     background: white;
   }
 }
+

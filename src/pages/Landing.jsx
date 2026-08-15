@@ -82,17 +82,25 @@ export default function Landing({ onDemo, onPrivacy }) {
       {/* Screenshots */}
       <section className="border-y border-line bg-white py-12 sm:py-20 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-muted text-center">In action</p>
-          <h2 className="section-title mt-3 text-center text-2xl sm:text-4xl">See P1 on the device.</h2>
-          <div className="mt-8 sm:mt-12 flex sm:grid sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-4 sm:mx-0 px-4 sm:px-0 snap-x sm:snap-none">
-            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/01-home.png" alt="P1 Dashboard" label="Dashboard" /></div>
-            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/02-journey.png" alt="P1 Journey" label="Journey" /></div>
-            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/03-checkin.png" alt="P1 Check-in" label="3D Check-in" /></div>
-            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/04-pain.png" alt="P1 Pain tracking" label="Pain" /></div>
-            <div className="shrink-0 w-[150px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/05-photo.png" alt="P1 Photo mode" label="Photo" /></div>
+          <div className="text-center">
+            <span className="inline-block rounded-full bg-mint px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-mint-dark">
+              In Action • Android Jetpack Compose
+            </span>
+            <h2 className="section-title mt-3 text-2xl sm:text-4xl">See P1 on device.</h2>
+            <p className="mt-3 text-muted max-w-xl mx-auto text-sm sm:text-base">
+              Built with our custom Stitch Sage & Mint design tokens, offline-first Room DB, and interactive 3D robot body.
+            </p>
+          </div>
+          <div className="mt-8 sm:mt-12 flex sm:grid sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 overflow-x-auto sm:overflow-visible pb-4 sm:pb-0 -mx-4 sm:mx-0 px-4 sm:px-0 snap-x sm:snap-none">
+            <div className="shrink-0 w-[160px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/screen_home.png" alt="P1 Real-Time Hub" label="Home Hub" /></div>
+            <div className="shrink-0 w-[160px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/screen_voice.png" alt="P1 Voice Logger" label="Voice Check-in" /></div>
+            <div className="shrink-0 w-[160px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/screen_3d_body.png" alt="P1 3D Robot HUD" label="3D Robot HUD" /></div>
+            <div className="shrink-0 w-[160px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/screen_timeline.png" alt="P1 Chronology Timeline" label="Timeline Log" /></div>
+            <div className="shrink-0 w-[160px] sm:w-auto snap-center"><PhoneFrame src="/screenshots/screen_report.png" alt="P1 Doctor Briefing PDF" label="Doctor Briefing" /></div>
           </div>
         </div>
       </section>
+
 
       {/* How it works */}
       <section id="how-it-works" className="py-16 sm:py-24">
