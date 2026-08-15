@@ -7,7 +7,12 @@ import {
   MoveRight,
   Camera,
   MapPin,
-  FileSpreadsheet
+  Smartphone,
+  Download,
+  ShieldCheck,
+  Zap,
+  QrCode,
+  ExternalLink
 } from "lucide-react";
 import CheckInMannequin3D from "../components/CheckInMannequin3D";
 
@@ -106,15 +111,26 @@ export default function Demo({ onSummary }) {
             Faithful port of the Android Jetpack Compose 3D Robot Mannequin, HUD instruments, and Speech Logger.
           </p>
         </div>
-        <button
-          onClick={onSummary}
-          className="btn-primary shrink-0 text-sm px-5 py-3 shadow-md flex items-center gap-2"
-        >
-          View Doctor Briefing PDF <MoveRight size={16} />
-        </button>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.preappointment1.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary text-sm px-5 py-3 shadow-md flex items-center gap-2"
+          >
+            <Smartphone size={16} /> Get on Google Play <ExternalLink size={14} />
+          </a>
+          <button
+            onClick={onSummary}
+            className="btn-secondary shrink-0 text-sm px-4 py-3 shadow-sm flex items-center gap-1.5"
+          >
+            Doctor Briefing <MoveRight size={15} />
+          </button>
+        </div>
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1.3fr_.7fr]">
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1.25fr_.75fr]">
         {/* Left Column: Interactive Check-in Engine */}
         <div className="space-y-6">
           {/* Mode Switcher */}
@@ -193,9 +209,62 @@ export default function Demo({ onSummary }) {
           )}
         </div>
 
-        {/* Right Column: Living Patient Timeline */}
+        {/* Right Column: Living Patient Timeline & App Download Box */}
         <div className="space-y-6">
-          <div className="rounded-3xl border border-line bg-white p-6 sm:p-7 shadow-card">
+          {/* HIGH-CONVERTING NATIVE APP DOWNLOAD CTA CARD */}
+          <div className="rounded-3xl border-2 border-sage/40 bg-gradient-to-br from-sage-dark to-[#0E1C19] p-6 text-white shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 -mr-8 -mt-8 h-32 w-32 rounded-full bg-mint/10 blur-2xl pointer-events-none" />
+            
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-mint mb-2">
+              <Smartphone size={15} /> Official Android App (v1.0.14)
+            </div>
+
+            <h3 className="text-xl font-black tracking-tight text-white">
+              Get the Full App on Google Play
+            </h3>
+
+            <p className="mt-2 text-xs leading-relaxed text-white/80">
+              Take complete control of your medical preparation with real-time on-device Room DB, continuous voice logging, and offline security.
+            </p>
+
+            <ul className="mt-4 space-y-2 text-xs text-white/90">
+              <li className="flex items-center gap-2">
+                <ShieldCheck size={14} className="text-mint shrink-0" />
+                <span><strong>100% Offline & Private</strong> (On-device database)</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Zap size={14} className="text-mint shrink-0" />
+                <span><strong>Zero-latency 3D Engine</strong> with Ghost Photo Overlay</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <QrCode size={14} className="text-mint shrink-0" />
+                <span><strong>Instant Physician PDF</strong> with Encrypted QR Sync</span>
+              </li>
+            </ul>
+
+            <div className="mt-6 flex flex-col gap-2.5">
+              <a
+                href="https://play.google.com/store/apps/details?id=com.preappointment1.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-2xl bg-mint py-3 text-xs font-black uppercase tracking-wider text-mint-dark shadow-lg hover:bg-white active:scale-[0.99] transition"
+              >
+                <Smartphone size={16} /> Download on Google Play
+              </a>
+
+              <a
+                href="https://github.com/Group-Hackathon/p1-design-sandbox/releases/tag/v1.0.0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/5 py-2.5 text-xs font-bold text-white/90 hover:bg-white/10 transition"
+              >
+                <Download size={14} /> Direct APK Download (.apk)
+              </a>
+            </div>
+          </div>
+
+          {/* Living Patient Timeline */}
+          <div className="rounded-3xl border border-line bg-white p-6 shadow-card">
             <div className="flex items-center justify-between border-b border-line pb-4">
               <div>
                 <h3 className="text-base font-bold text-ink">Living Chronology</h3>
@@ -207,7 +276,7 @@ export default function Demo({ onSummary }) {
             </div>
 
             {/* Timeline Nodes */}
-            <div className="mt-6 space-y-4 max-h-[460px] overflow-y-auto pr-1">
+            <div className="mt-6 space-y-4 max-h-[360px] overflow-y-auto pr-1">
               {events.map((ev) => (
                 <div key={ev.id} className="relative pl-6 pb-2 border-l-2 border-mint-dark/30 last:border-transparent">
                   <div className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-sage ring-4 ring-mint" />
