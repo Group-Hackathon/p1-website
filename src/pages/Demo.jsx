@@ -1,36 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   Activity,
   Mic,
   MicOff,
   Sparkles,
   MoveRight,
-  RotateCcw,
-  Thermometer,
-  MapPin,
   Camera,
-  CheckCircle2,
-  RefreshCw,
-  Eye,
-  Sliders,
-  Layers
+  MapPin,
+  FileSpreadsheet
 } from "lucide-react";
+import CheckInMannequin3D from "../components/CheckInMannequin3D";
 
 export default function Demo({ onSummary }) {
   const [activeMode, setActiveMode] = useState("bodymap"); // 'bodymap' | 'voice'
-  const [selectedRegions, setSelectedRegions] = useState(["head"]);
-  const [selectedLabels, setSelectedLabels] = useState(["Head"]);
-  const [viewSide, setViewSide] = useState("front"); // 'front' | 'back'
-  const [painLevel, setPainLevel] = useState(4);
-  const [temperature, setTemperature] = useState(37.4);
-  const [note, setNote] = useState("");
-  const [hasPhoto, setHasPhoto] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [voiceTranscript, setVoiceTranscript] = useState("");
 
-  const iframeRef = useRef(null);
-
-  // Dynamic Living Timeline
+  // Living Timeline matching APK
   const [events, setEvents] = useState([
     {
       id: 1,
@@ -54,36 +40,6 @@ export default function Demo({ onSummary }) {
     }
   ]);
 
-  // Listen to postMessage from the 3D Bodymap iframe
-  useEffect(() => {
-    function handleMessage(event) {
-      if (!event.data || typeof event.data !== "object") return;
-      if (event.data.type === "selection") {
-        if (event.data.regions && event.data.regions.length > 0) {
-          setSelectedRegions(event.data.regions);
-          setSelectedLabels(event.data.labels || event.data.regions);
-        }
-      }
-    }
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
-
-  function toggleViewSide(side) {
-    setViewSide(side);
-    if (iframeRef.current && iframeRef.current.contentWindow) {
-      iframeRef.current.contentWindow.postMessage({ type: "set_view", view: side }, "*");
-    }
-  }
-
-  function reset3DSelection() {
-    setSelectedRegions([]);
-    setSelectedLabels([]);
-    if (iframeRef.current && iframeRef.current.contentWindow) {
-      iframeRef.current.contentWindow.postMessage({ type: "reset" }, "*");
-    }
-  }
-
   function getPainColor(level) {
     if (level <= 3) return "#2E7D32"; // PainLow
     if (level <= 6) return "#D97706"; // PainMedium
@@ -104,24 +60,35 @@ export default function Demo({ onSummary }) {
     }
   }
 
-  function handleCommitCheckIn(e) {
-    e.preventDefault();
-    const regionText = selectedLabels.length > 0 ? selectedLabels.join(", ") : "General";
+  function handle3DCommit({ pain, temp, zones, photosCount }) {
+    const regionText = zones.length > 0 ? zones.join(", ") : "General";
     const newEntry = {
       id: Date.now(),
       time: "Just now",
       part: regionText,
-      pain: Number(painLevel),
-      temp: Number(temperature),
-      note: activeMode === "voice" && voiceTranscript ? voiceTranscript : (note || `Check-in recorded for ${regionText}.`),
-      type: activeMode === "voice" ? "Voice Check-in" : "3D Mannequin HUD",
-      photo: hasPhoto
+      pain: Number(pain),
+      temp: Number(temp.toFixed(1)),
+      note: `3D Check-in recorded for ${regionText}. Pain: ${pain}/10, Temp: ${temp.toFixed(1)}°C.`,
+      type: "3D Mannequin HUD",
+      photo: photosCount > 0
     };
-
     setEvents([newEntry, ...events]);
-    setNote("");
-    setHasPhoto(false);
-    if (activeMode === "voice") setVoiceTranscript("");
+  }
+
+  function handleVoiceCommit() {
+    if (!voiceTranscript) return;
+    const newEntry = {
+      id: Date.now(),
+      time: "Just now",
+      part: "Temporal zone",
+      pain: 4,
+      temp: 37.5,
+      note: voiceTranscript,
+      type: "Voice Logger",
+      photo: false
+    };
+    setEvents([newEntry, ...events]);
+    setVoiceTranscript("");
   }
 
   return (
@@ -130,24 +97,24 @@ export default function Demo({ onSummary }) {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end border-b border-line pb-6">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-mint px-3 py-1 text-xs font-bold uppercase tracking-wider text-mint-dark mb-2">
-            <Sparkles size={14} /> Official 3D Engine & APK Simulator
+            <Sparkles size={14} /> Jetpack Compose 3D Spatial Simulator
           </div>
           <h1 className="text-3xl font-black tracking-tight text-ink sm:text-4xl">
             Pre-Appointment 1 Interactive Demo
           </h1>
           <p className="mt-1 text-muted text-sm sm:text-base">
-            Featuring the exact 3D Clinical Mannequin, Hands-Free Speech Logger, and living timeline from the Android app.
+            Faithful port of the Android Jetpack Compose 3D Robot Mannequin, HUD instruments, and Speech Logger.
           </p>
         </div>
         <button
           onClick={onSummary}
-          className="btn-primary shrink-0 text-sm px-5 py-3 shadow-md"
+          className="btn-primary shrink-0 text-sm px-5 py-3 shadow-md flex items-center gap-2"
         >
           View Doctor Briefing PDF <MoveRight size={16} />
         </button>
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1.25fr_.75fr]">
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1.3fr_.7fr]">
         {/* Left Column: Interactive Check-in Engine */}
         <div className="space-y-6">
           {/* Mode Switcher */}
@@ -160,7 +127,7 @@ export default function Demo({ onSummary }) {
                   : "text-muted hover:text-ink"
               }`}
             >
-              <Activity size={16} /> 3D Clinical Mannequin HUD
+              <Activity size={16} /> 3D Robot Mannequin Spatial HUD
             </button>
             <button
               onClick={() => setActiveMode("voice")}
@@ -176,130 +143,8 @@ export default function Demo({ onSummary }) {
 
           {/* Mode 1: 3D Robot HUD */}
           {activeMode === "bodymap" && (
-            <div className="rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-card">
-              <div className="flex items-center justify-between border-b border-line pb-4 mb-6">
-                <div>
-                  <h2 className="text-lg font-bold text-ink">Interactive 3D Anatomical Picker</h2>
-                  <p className="text-xs text-muted">Drag to rotate 360° • Tap body regions to mark pain telemetry</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => toggleViewSide(viewSide === "front" ? "back" : "front")}
-                    className="flex items-center gap-1.5 rounded-xl border border-line bg-cream px-3 py-1.5 text-xs font-bold text-ink hover:bg-white transition"
-                  >
-                    <Eye size={13} /> {viewSide === "front" ? "View Back" : "View Front"}
-                  </button>
-                  <button
-                    onClick={reset3DSelection}
-                    className="rounded-xl border border-line bg-cream p-1.5 text-muted hover:text-ink transition"
-                    title="Reset selection"
-                  >
-                    <RotateCcw size={14} />
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid gap-6 sm:grid-cols-[1.1fr_.9fr] items-center">
-                {/* 3D Mannequin Embedded Frame */}
-                <div className="relative mx-auto w-full h-[380px] rounded-2xl bg-[#0D1A14] border-2 border-sage/40 overflow-hidden shadow-inner flex items-center justify-center">
-                  {/* Grid Lines Ambient HUD */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_right,#2D524A12_1px,transparent_1px),linear-gradient(to_bottom,#2D524A12_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none z-10" />
-
-                  {/* 3D Bodymap Canvas Iframe */}
-                  <iframe
-                    ref={iframeRef}
-                    src="/bodymap.html"
-                    title="3D Mannequin HUD"
-                    className="w-full h-full border-none relative z-0"
-                  />
-
-                  {/* Floating Selection Badge */}
-                  <div className="absolute bottom-3 left-3 right-3 z-20 pointer-events-none flex justify-center">
-                    <span className="rounded-full bg-sage/90 backdrop-blur border border-mint/30 px-3 py-1 text-[11px] font-bold text-mint shadow-lg">
-                      Target: {selectedLabels.length > 0 ? selectedLabels.join(", ") : "Tap Mannequin"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Telemetry Controls Panel */}
-                <div className="space-y-4">
-                  {/* Pain Scale */}
-                  <div className="rounded-2xl border border-line bg-cream p-4">
-                    <div className="flex justify-between items-center text-sm font-semibold">
-                      <span className="text-ink">Pain Ladder</span>
-                      <span
-                        className="rounded-full px-2.5 py-0.5 text-xs font-bold text-white shadow-sm"
-                        style={{ backgroundColor: getPainColor(painLevel) }}
-                      >
-                        Level {painLevel}/10
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="10"
-                      value={painLevel}
-                      onChange={(e) => setPainLevel(Number(e.target.value))}
-                      className="mt-3 w-full h-2 rounded-lg bg-gray-200 accent-sage cursor-pointer"
-                    />
-                    <div className="flex justify-between text-[10px] font-bold text-muted mt-1">
-                      <span>0 Mild</span>
-                      <span>5 Moderate</span>
-                      <span>10 Severe</span>
-                    </div>
-                  </div>
-
-                  {/* Temperature Slider */}
-                  <div className="rounded-2xl border border-line bg-cream p-4">
-                    <div className="flex justify-between items-center text-sm font-semibold">
-                      <span className="text-ink flex items-center gap-1">
-                        <Thermometer size={15} className="text-sage" /> Body Temp
-                      </span>
-                      <span className="font-mono font-bold text-sage-dark bg-mint px-2 py-0.5 rounded-lg text-xs">
-                        {temperature.toFixed(1)}°C
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="36.0"
-                      max="40.0"
-                      step="0.1"
-                      value={temperature}
-                      onChange={(e) => setTemperature(Number(e.target.value))}
-                      className="mt-3 w-full h-2 rounded-lg bg-gray-200 accent-sage cursor-pointer"
-                    />
-                  </div>
-
-                  {/* Photo & Note Attachment */}
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={note}
-                      onChange={(e) => setNote(e.target.value)}
-                      placeholder="Observation note..."
-                      className="flex-1 rounded-xl border border-line bg-cream px-3 py-2 text-xs text-ink outline-none focus:border-sage focus:bg-white"
-                    />
-                    <button
-                      onClick={() => setHasPhoto(!hasPhoto)}
-                      className={`rounded-xl border p-2 text-xs font-bold transition flex items-center gap-1 ${
-                        hasPhoto
-                          ? "bg-mint border-mint-dark text-mint-dark"
-                          : "border-line bg-cream text-muted hover:text-ink"
-                      }`}
-                      title="Simulate photo capture"
-                    >
-                      <Camera size={15} />
-                    </button>
-                  </div>
-
-                  <button
-                    onClick={handleCommitCheckIn}
-                    className="btn-primary w-full py-3 text-sm font-bold shadow-sm"
-                  >
-                    Commit to Living Timeline
-                  </button>
-                </div>
-              </div>
+            <div>
+              <CheckInMannequin3D onCommit={handle3DCommit} />
             </div>
           )}
 
@@ -338,7 +183,7 @@ export default function Demo({ onSummary }) {
 
               {voiceTranscript && !isRecording && (
                 <button
-                  onClick={handleCommitCheckIn}
+                  onClick={handleVoiceCommit}
                   className="btn-primary mt-6 w-full py-3 text-sm font-bold"
                 >
                   Commit Voice Note to Timeline
