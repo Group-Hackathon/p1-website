@@ -343,8 +343,8 @@ export default function CheckInMannequin3D({
 
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-3xl border-2 border-sage/40 bg-[#0E1C19] text-white shadow-2xl select-none ${className}`}
-      style={{ minHeight: "580px" }}
+      className={`relative w-full overflow-hidden rounded-3xl border-2 border-sage/40 bg-[#0E1C19] text-white shadow-2xl select-none touch-none ${className}`}
+      style={{ minHeight: "540px", height: "100%", maxHeight: "720px" }}
       onPointerDown={handlePointerDown}
       onPointerMove={(e) => {
         handlePointerMove(e);
@@ -356,15 +356,15 @@ export default function CheckInMannequin3D({
       }}
     >
       {/* 3D Scene Viewport Canvas */}
-      <div ref={containerRef} className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing" />
+      <div ref={containerRef} className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing touch-none" />
 
       {/* Grid Lines HUD Layer */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#3DDC8408_1px,transparent_1px),linear-gradient(to_bottom,#3DDC8408_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
       {/* ── PHOTO MODE OVERLAY (Matching CheckInScreen.kt) ── */}
       {photoMode && (
-        <div className="absolute inset-0 z-30 bg-black/40 flex flex-col justify-between p-6">
-          <div className="mx-auto rounded-xl bg-black/80 backdrop-blur px-4 py-2 text-xs font-bold text-white border border-white/20 shadow-lg">
+        <div className="absolute inset-0 z-30 bg-black/40 flex flex-col justify-between p-4 sm:p-6">
+          <div className="mx-auto rounded-xl bg-black/80 backdrop-blur px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold text-white border border-white/20 shadow-lg">
             Drag frame to target area
           </div>
 
@@ -380,16 +380,16 @@ export default function CheckInMannequin3D({
           </div>
 
           {/* Compact actions matching CheckInScreen.kt */}
-          <div className="flex justify-center gap-3 mb-24">
+          <div className="flex justify-center gap-3 mb-20 sm:mb-24">
             <button
               onClick={() => setPhotoMode(false)}
-              className="rounded-xl border border-white/30 bg-transparent px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white/80 hover:bg-white/10 transition"
+              className="rounded-xl border border-white/30 bg-transparent px-3.5 sm:px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white/80 hover:bg-white/10 transition"
             >
               CANCEL
             </button>
             <button
               onClick={handleAddPhotoConfirm}
-              className="rounded-xl bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-gray-100 transition"
+              className="rounded-xl bg-white px-3.5 sm:px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-gray-100 transition"
             >
               CONFIRM
             </button>
@@ -398,88 +398,88 @@ export default function CheckInMannequin3D({
       )}
 
       {/* ── FLOATING HUD CONTROLS (Exact Jetpack Compose Spatial Layout) ── */}
-      <div className="relative z-10 flex h-full flex-col justify-between p-6 pointer-events-none">
+      <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 pointer-events-none">
         {/* Top View Bar */}
         <div className="flex justify-between items-center pointer-events-auto">
-          <span className="rounded-full bg-black/60 backdrop-blur border border-white/10 px-3 py-1 text-[11px] font-bold text-mint uppercase tracking-wider flex items-center gap-1.5 shadow-md">
+          <span className="rounded-full bg-black/60 backdrop-blur border border-white/10 px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-bold text-mint uppercase tracking-wider flex items-center gap-1.5 shadow-md">
             <Eye size={12} /> 3D Spatial Instruments
           </span>
           <button
             onClick={() => {
               rotationRef.current.targetY += Math.PI;
             }}
-            className="rounded-full bg-black/60 backdrop-blur border border-white/10 px-3 py-1 text-xs font-bold text-white/80 hover:text-white transition flex items-center gap-1 shadow-md"
+            className="rounded-full bg-black/60 backdrop-blur border border-white/10 px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold text-white/80 hover:text-white transition flex items-center gap-1 shadow-md"
           >
-            <RotateCcw size={13} /> Turn 180°
+            <RotateCcw size={12} /> Turn 180°
           </button>
         </div>
 
         {/* Center Spatial Gadgets: PAIN / PHOTO / TEMP (Matching GadgetReadout in Jetpack Compose) */}
-        <div className="my-auto grid grid-cols-3 items-end gap-2 text-center pointer-events-auto pb-4">
+        <div className="my-auto grid grid-cols-3 items-end gap-1 sm:gap-2 text-center pointer-events-auto pb-2 sm:pb-4">
           {/* Left Gadget: PAIN LADDER */}
           <div className="flex flex-col items-center">
-            <span className="text-[11px] font-bold uppercase tracking-[3px] text-white/45">PAIN</span>
-            <span className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[2px] sm:tracking-[3px] text-white/45">PAIN</span>
+            <span className="text-2xl sm:text-4xl font-extrabold text-white drop-shadow-md">
               {painLevel}
             </span>
-            <span className="text-[11px] font-bold text-white/45">/ 10</span>
-            <div className="mt-2 flex gap-2">
+            <span className="text-[10px] sm:text-[11px] font-bold text-white/45">/ 10</span>
+            <div className="mt-1.5 sm:mt-2 flex gap-1.5 sm:gap-2">
               <button
                 onClick={() => setPainLevel(Math.max(0, painLevel - 1))}
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-base hover:bg-white/20 active:scale-95 transition"
+                className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/20 active:scale-95 transition"
               >
-                <Minus size={14} />
+                <Minus size={13} />
               </button>
               <button
                 onClick={() => setPainLevel(Math.min(10, painLevel + 1))}
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-base hover:bg-white/20 active:scale-95 transition"
+                className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/20 active:scale-95 transition"
               >
-                <Plus size={14} />
+                <Plus size={13} />
               </button>
             </div>
           </div>
 
           {/* Center Gadget: PHOTO SHUTTER */}
           <div className="flex flex-col items-center">
-            <span className="text-[11px] font-bold uppercase tracking-[3px] text-white/45">PHOTO</span>
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[2px] sm:tracking-[3px] text-white/45">PHOTO</span>
             <button
               onClick={() => setPhotoMode(true)}
-              className="mt-2 grid h-13 w-13 place-items-center rounded-full border border-white/25 bg-white/10 text-white shadow-xl hover:bg-white/20 active:scale-95 transition backdrop-blur-md"
+              className="mt-1.5 sm:mt-2 grid h-11 w-11 sm:h-13 sm:w-13 place-items-center rounded-full border border-white/25 bg-white/10 text-white shadow-xl hover:bg-white/20 active:scale-95 transition backdrop-blur-md"
               title="Add anatomical photo"
             >
-              <div className="grid h-8 w-8 place-items-center rounded-full border border-white/55">
-                <Plus size={16} />
+              <div className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full border border-white/55">
+                <Plus size={15} />
               </div>
             </button>
-            <span className="mt-1 text-[10px] text-mint font-semibold">
+            <span className="mt-1 text-[9px] sm:text-[10px] text-mint font-semibold">
               {photos.length > 0 ? `${photos.length} Captured` : ""}
             </span>
           </div>
 
           {/* Right Gadget: TEMPERATURE */}
           <div className="flex flex-col items-center">
-            <span className="text-[11px] font-bold uppercase tracking-[3px] text-white/45">TEMP</span>
-            <span className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[2px] sm:tracking-[3px] text-white/45">TEMP</span>
+            <span className="text-2xl sm:text-4xl font-extrabold text-white drop-shadow-md">
               {displayTemp}
             </span>
             <button
               onClick={() => setIsCelsius(!isCelsius)}
-              className="rounded-md px-1.5 py-0.5 text-[11px] font-bold text-white/45 hover:text-white bg-white/5"
+              className="rounded-md px-1.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-white/45 hover:text-white bg-white/5"
             >
               {isCelsius ? "°C" : "°F"}
             </button>
-            <div className="mt-2 flex gap-2">
+            <div className="mt-1.5 sm:mt-2 flex gap-1.5 sm:gap-2">
               <button
                 onClick={() => setTemperature(Math.max(35.0, Number((temperature - 0.2).toFixed(1))))}
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-base hover:bg-white/20 active:scale-95 transition"
+                className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/20 active:scale-95 transition"
               >
-                <Minus size={14} />
+                <Minus size={13} />
               </button>
               <button
                 onClick={() => setTemperature(Math.min(41.0, Number((temperature + 0.2).toFixed(1))))}
-                className="grid h-8 w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-base hover:bg-white/20 active:scale-95 transition"
+                className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full border border-white/20 bg-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/20 active:scale-95 transition"
               >
-                <Plus size={14} />
+                <Plus size={13} />
               </button>
             </div>
           </div>
