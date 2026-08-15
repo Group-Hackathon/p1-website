@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Plus, Minus, Camera, X, Check, Eye, RotateCcw } from "lucide-react";
+import { Plus, Minus, X, Check, Eye, RotateCcw } from "lucide-react";
+
+const GADGET_X = 1.35;
+const BASE_Y = -0.55;
+const GADGET_SCALE = 0.65;
+const PAIN_RUNGS = 10;
+const RUNG_SPACING = 0.15 * GADGET_SCALE;
+const BULB_RADIUS = 0.147 * GADGET_SCALE;
 
 export default function CheckInMannequin3D({
   onCommit,
@@ -22,6 +29,8 @@ export default function CheckInMannequin3D({
 
   const rotationRef = useRef({ y: 0, targetY: 0, isDragging: false, lastX: 0 });
   const mixerRef = useRef(null);
+  const rungsRef = useRef([]);
+  const thermoRef = useRef({ bulb: null, fluid: null, track: null });
 
   const zonesList = [
     "Head",
@@ -36,11 +45,15 @@ export default function CheckInMannequin3D({
     "Feet"
   ];
 
+  // Colors matching Android HudGadgets3D.kt
+  const activeColor = new THREE.Color(0x3ddc84); // Luminous Mint
+  const idleColor = new THREE.Color(0x1a2e28);   // Dark idle Sage
+
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
-    const width = container.clientWidth || 400;
-    const height = container.clientHeight || 500;
+    const width = container.clientWidth || 420;
+    const height = container.clientHeight || 560;
 
     // Scene
     const scene = new THREE.Scene();
@@ -60,60 +73,93 @@ export default function CheckInMannequin3D({
     container.appendChild(renderer.domElement);
 
     // Lighting (matching Android Sceneview)
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1d3b34, 0.85);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1d3b34, 0.9);
     scene.add(hemiLight);
 
-    const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    const mainLight = new THREE.DirectionalLight(0xffffff, 2.0);
     mainLight.position.set(1.5, 4.0, 3.5);
     scene.add(mainLight);
 
-    const fillLight = new THREE.DirectionalLight(0x3ddc84, 0.35);
+    const fillLight = new THREE.DirectionalLight(0x3ddc84, 0.45);
     fillLight.position.set(-2, 1, -2);
     scene.add(fillLight);
 
     // Floor glow circle
-    const floorGeo = new THREE.CircleGeometry(1.6, 32);
-    const floorMat = new THREE.MeshBasicMaterial({ color: 0x162c26 });
+    const floorGeo = new THREE.CircleGeometry(1.8, 36);
+    const floorMat = new THREE.MeshBasicMaterial({ color: 0x142823 });
     const floor = new THREE.Mesh(floorGeo, floorMat);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -1.25;
     scene.add(floor);
 
-    let mannequinGroup = new THREE.Group();
+    const mannequinGroup = new THREE.Group();
     scene.add(mannequinGroup);
 
-    // Load mannequin_pbr.glb
+    const gadgetsGroup = new THREE.Group();
+    scene.add(gadgetsGroup);
+
     const loader = new GLTFLoader();
-    loader.load(
-      "/mannequin_pbr.glb",
-      (gltf) => {
-        const model = gltf.scene;
-        // Scale to fit viewport perfectly
-        model.scale.set(0.34, 0.34, 0.34);
-        model.position.set(0, -1.25, 0);
 
-        mannequinGroup.add(model);
+    // 1. Load mannequin_pbr.glb
+    loader.load("/mannequin_pbr.glb", (gltf) => {
+      const model = gltf.scene;
+      model.scale.set(0.34, 0.34, 0.34);
+      model.position.set(0, -1.25, 0);
+      mannequinGroup.add(model);
 
-        // Play animations if available
-        if (gltf.animations && gltf.animations.length > 0) {
-          const mixer = new THREE.AnimationMixer(model);
-          mixerRef.current = mixer;
-          const action = mixer.clipAction(gltf.animations[0]);
-          action.setEffectiveTimeScale(0.3);
-          action.play();
-        }
-      },
-      undefined,
-      (err) => {
-        console.warn("Could not load mannequin_pbr.glb, rendering geometric mannequin fallback", err);
-        // Fallback procedural robot mannequin if GLB path requires fallback
-        const geom = new THREE.CapsuleGeometry(0.35, 1.2, 8, 16);
-        const mat = new THREE.MeshStandardMaterial({ color: 0x24433a, roughness: 0.4 });
-        const mesh = new THREE.Mesh(geom, mat);
-        mesh.position.y = 0;
-        mannequinGroup.add(mesh);
+      if (gltf.animations && gltf.animations.length > 0) {
+        const mixer = new THREE.AnimationMixer(model);
+        mixerRef.current = mixer;
+        const action = mixer.clipAction(gltf.animations[0]);
+        action.setEffectiveTimeScale(0.35);
+        action.play();
       }
-    );
+    });
+
+    // 2. Load 3D Pain Ladder Plates (10 rungs)
+    const rungs = [];
+    loader.load("/pain_plate.glb", (gltf) => {
+      const basePlate = gltf.scene;
+      for (let i = 0; i < PAIN_RUNGS; i++) {
+        const rung = basePlate.clone();
+        const t = i / (PAIN_RUNGS - 1);
+        const widthScale = (0.23 + (0.33 - 0.23) * t) / 0.28 * GADGET_SCALE;
+        rung.scale.set(widthScale, GADGET_SCALE * 0.7, GADGET_SCALE);
+        rung.position.set(-GADGET_X, BASE_Y + i * RUNG_SPACING, 0);
+        gadgetsGroup.add(rung);
+        rungs.push(rung);
+      }
+      rungsRef.current = rungs;
+      updatePainRungs(painLevel, rungs);
+    });
+
+    // 3. Load 3D Thermometer Components (bulb, fluid, track)
+    loader.load("/thermo_bulb.glb", (gltf) => {
+      const bulb = gltf.scene;
+      bulb.scale.set(GADGET_SCALE, GADGET_SCALE, GADGET_SCALE);
+      bulb.position.set(GADGET_X, BASE_Y, 0);
+      gadgetsGroup.add(bulb);
+      thermoRef.current.bulb = bulb;
+      updateThermo(temperature);
+    });
+
+    loader.load("/thermo_fluid.glb", (gltf) => {
+      const fluid = gltf.scene;
+      fluid.scale.set(GADGET_SCALE, GADGET_SCALE, GADGET_SCALE);
+      fluid.position.set(GADGET_X, BASE_Y + BULB_RADIUS * 0.6, 0);
+      gadgetsGroup.add(fluid);
+      thermoRef.current.fluid = fluid;
+      updateThermo(temperature);
+    });
+
+    loader.load("/thermo_track.glb", (gltf) => {
+      const track = gltf.scene;
+      track.scale.set(GADGET_SCALE, GADGET_SCALE, GADGET_SCALE);
+      track.position.set(GADGET_X, BASE_Y + BULB_RADIUS * 0.6, 0);
+      gadgetsGroup.add(track);
+      thermoRef.current.track = track;
+      updateThermo(temperature);
+    });
 
     // Resize handler
     function handleResize() {
@@ -154,6 +200,69 @@ export default function CheckInMannequin3D({
       renderer.dispose();
     };
   }, []);
+
+  function updatePainRungs(level, rungs = rungsRef.current) {
+    if (!rungs || rungs.length === 0) return;
+    rungs.forEach((rung, index) => {
+      const active = index < level;
+      rung.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
+          child.material.color.copy(active ? activeColor : idleColor);
+          if (active) {
+            child.material.emissive = activeColor;
+            child.material.emissiveIntensity = 0.45;
+          } else {
+            child.material.emissive = new THREE.Color(0x000000);
+          }
+        }
+      });
+    });
+  }
+
+  function updateThermo(celsius) {
+    const fraction = Math.max(0.05, Math.min(1.0, (celsius - 35.0) / 6.0));
+    const { bulb, fluid, track } = thermoRef.current;
+
+    if (bulb) {
+      bulb.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
+          child.material.color.copy(activeColor);
+          child.material.emissive = activeColor;
+          child.material.emissiveIntensity = 0.4;
+        }
+      });
+    }
+    if (fluid) {
+      fluid.scale.set(GADGET_SCALE, GADGET_SCALE * fraction, GADGET_SCALE);
+      fluid.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
+          child.material.color.copy(activeColor);
+          child.material.emissive = activeColor;
+          child.material.emissiveIntensity = 0.4;
+        }
+      });
+    }
+    if (track) {
+      track.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material = child.material.clone();
+          child.material.color.copy(idleColor);
+        }
+      });
+    }
+  }
+
+  // Synchronize 3D gadgets on prop/state changes
+  useEffect(() => {
+    updatePainRungs(painLevel);
+  }, [painLevel]);
+
+  useEffect(() => {
+    updateThermo(temperature);
+  }, [temperature]);
 
   // Drag-to-spin controls for 3D model
   function handlePointerDown(e) {
@@ -256,10 +365,10 @@ export default function CheckInMannequin3D({
       {photoMode && (
         <div className="absolute inset-0 z-30 bg-black/40 flex flex-col justify-between p-6">
           <div className="mx-auto rounded-xl bg-black/80 backdrop-blur px-4 py-2 text-xs font-bold text-white border border-white/20 shadow-lg">
-            Drag reticle frame to target anatomical area
+            Drag frame to target area
           </div>
 
-          {/* Draggable Frame */}
+          {/* Draggable Frame (64x64px matching Android) */}
           <div
             onMouseDown={handleFrameMouseDown}
             style={{
@@ -270,19 +379,19 @@ export default function CheckInMannequin3D({
             <div className="h-2 w-2 rounded-full bg-white animate-ping" />
           </div>
 
-          {/* Cancel / Confirm actions */}
+          {/* Compact actions matching CheckInScreen.kt */}
           <div className="flex justify-center gap-3 mb-24">
             <button
               onClick={() => setPhotoMode(false)}
-              className="rounded-xl border border-white/30 bg-black/60 px-5 py-2 text-xs font-bold uppercase tracking-wider text-white/80 hover:bg-black/90 transition"
+              className="rounded-xl border border-white/30 bg-transparent px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white/80 hover:bg-white/10 transition"
             >
-              Cancel
+              CANCEL
             </button>
             <button
               onClick={handleAddPhotoConfirm}
-              className="rounded-xl bg-white px-5 py-2 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-gray-100 transition"
+              className="rounded-xl bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-gray-100 transition"
             >
-              Confirm Target
+              CONFIRM
             </button>
           </div>
         </div>
@@ -293,7 +402,7 @@ export default function CheckInMannequin3D({
         {/* Top View Bar */}
         <div className="flex justify-between items-center pointer-events-auto">
           <span className="rounded-full bg-black/60 backdrop-blur border border-white/10 px-3 py-1 text-[11px] font-bold text-mint uppercase tracking-wider flex items-center gap-1.5 shadow-md">
-            <Eye size={12} /> 3D Anatomical Spatial HUD
+            <Eye size={12} /> 3D Spatial Instruments
           </span>
           <button
             onClick={() => {
@@ -309,11 +418,11 @@ export default function CheckInMannequin3D({
         <div className="my-auto grid grid-cols-3 items-end gap-2 text-center pointer-events-auto pb-4">
           {/* Left Gadget: PAIN LADDER */}
           <div className="flex flex-col items-center">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">PAIN</span>
-            <span className="text-3xl sm:text-4xl font-black text-white drop-shadow-md">
+            <span className="text-[11px] font-bold uppercase tracking-[3px] text-white/45">PAIN</span>
+            <span className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">
               {painLevel}
             </span>
-            <span className="text-[11px] font-bold text-white/50">/ 10</span>
+            <span className="text-[11px] font-bold text-white/45">/ 10</span>
             <div className="mt-2 flex gap-2">
               <button
                 onClick={() => setPainLevel(Math.max(0, painLevel - 1))}
@@ -332,30 +441,30 @@ export default function CheckInMannequin3D({
 
           {/* Center Gadget: PHOTO SHUTTER */}
           <div className="flex flex-col items-center">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">PHOTO</span>
+            <span className="text-[11px] font-bold uppercase tracking-[3px] text-white/45">PHOTO</span>
             <button
               onClick={() => setPhotoMode(true)}
-              className="mt-2 grid h-14 w-14 place-items-center rounded-full border border-white/30 bg-white/10 text-white shadow-xl hover:bg-white/20 active:scale-95 transition backdrop-blur-md"
+              className="mt-2 grid h-13 w-13 place-items-center rounded-full border border-white/25 bg-white/10 text-white shadow-xl hover:bg-white/20 active:scale-95 transition backdrop-blur-md"
               title="Add anatomical photo"
             >
-              <div className="grid h-9 w-9 place-items-center rounded-full border border-white/60">
-                <Camera size={18} />
+              <div className="grid h-8 w-8 place-items-center rounded-full border border-white/55">
+                <Plus size={16} />
               </div>
             </button>
             <span className="mt-1 text-[10px] text-mint font-semibold">
-              {photos.length > 0 ? `${photos.length} Captured` : "Tap to aim"}
+              {photos.length > 0 ? `${photos.length} Captured` : ""}
             </span>
           </div>
 
           {/* Right Gadget: TEMPERATURE */}
           <div className="flex flex-col items-center">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">TEMP</span>
-            <span className="text-3xl sm:text-4xl font-black text-white drop-shadow-md">
+            <span className="text-[11px] font-bold uppercase tracking-[3px] text-white/45">TEMP</span>
+            <span className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">
               {displayTemp}
             </span>
             <button
               onClick={() => setIsCelsius(!isCelsius)}
-              className="rounded px-1.5 py-0.5 text-[11px] font-bold text-white/60 hover:text-white bg-white/5"
+              className="rounded-md px-1.5 py-0.5 text-[11px] font-bold text-white/45 hover:text-white bg-white/5"
             >
               {isCelsius ? "°C" : "°F"}
             </button>
@@ -378,7 +487,7 @@ export default function CheckInMannequin3D({
 
         {/* Bottom Section: Zone Badges & Save Button (Matching CheckInScreen.kt) */}
         <div className="space-y-3 pointer-events-auto">
-          {/* Zone Badges Pill Carousel */}
+          {/* Zone Badges Pill Carousel (Mint Badge Theme) */}
           <div className="flex flex-wrap justify-center gap-1.5 max-h-24 overflow-y-auto py-1">
             {zonesList.map((zone) => {
               const isSelected = selectedZones.includes(zone);
@@ -398,10 +507,10 @@ export default function CheckInMannequin3D({
             })}
           </div>
 
-          {/* Commit Action Button */}
+          {/* Commit Action Button (Sage Primary capsule) */}
           <button
             onClick={handleCommit}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-sage py-3.5 text-sm font-black uppercase tracking-widest text-white shadow-xl hover:bg-sage-dark active:scale-[0.99] transition border border-mint/20"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-sage py-3.5 text-sm font-bold uppercase tracking-[2px] text-white shadow-xl hover:bg-sage-dark active:scale-[0.99] transition border border-mint/20"
           >
             <Check size={18} /> Commit to Living Timeline
           </button>
